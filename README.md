@@ -27,8 +27,8 @@
 ## Запуск проекта локально
 ### 1. Клонировать репозиторий
 ```bash
-git clone <repository_url> Сюда добавить url своего репозитория после деплоя
-cd <project_folder> и сюда
+git clone https://github.com/sergeybogatov194-dev/django-stripe-payment.git
+cd django-stripe-payment
 ```
 
 ### 2. Создать и активировать виртуальное окружение
@@ -64,5 +64,5 @@ python manage.py createsuperuser
 ```bash
 python manage.py runserver
 ```
-# Сервер запустится на http://127.0.0.1:8000
+### Сервер запустится на http://127.0.0.1:8000
 
