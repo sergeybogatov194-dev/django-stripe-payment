@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cart</title>
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+
+<h2>Your order</h2>
+
+{% if order %}
+    <p>Order ID: {{ order.id }}</p>
+
+    <ul>
+        {% for order_item in order.items.all %}
+            <li>
+                {{ order_item.item.name }} —
+                {{ order_item.quantity }} × {{ order_item.item.price }}
+            </li>
+        {% endfor %}
+    </ul>
+
+    <p><strong>Total:</strong> {{ order.total_cost_order }}</p>
+
+    <button id="buy-button">Buy</button>
+
+{% else %}
+    <p>Cart is empty</p>
+{% endif %}
+
+<script>
+    const stripe = Stripe("{{ STRIPE_PUBLISHABLE_KEY }}");
+
+    document.getElementById("buy-button")?.addEventListener("click", async () => {
+        const response = await fetch("{% url 'payment_order' %}", {
+            method: "POST",
+            headers: {
+                "X-CSRFToken": "{{ csrf_token }}"
+            }
+        });
+
+        const data = await response.json();
+        stripe.redirectToCheckout({ sessionId: data.session_id });
+    });
+</script>
+
+</body>
+</html>

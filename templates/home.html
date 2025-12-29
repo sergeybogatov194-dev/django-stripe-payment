@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Shop</title>
+</head>
+<body>
+
+{% if messages %}
+    <ul class="messages" style="list-style: none; padding: 0; margin-bottom: 15px;">
+        {% for message in messages %}
+            <li style="color: #555;">
+                {{ message }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+    <div>
+        {% if request.user.is_authenticated %}
+            User: {{ request.user.username }}
+        {% else %}
+            Guest
+        {% endif %}
+    </div>
+
+    <div>
+        <a href="{% url 'cart' %}">Redirect to cart</a>
+    </div>
+</div>
+
+<hr>
+
+<h2>Items</h2>
+
+<ul>
+    {% for item in items %}
+        <li>
+            <strong>{{ item.name }}</strong><br>
+            {{ item.description }}<br>
+            Price: {{ item.price }}<br>
+
+            <form method="post" action="{% url 'add_item' item.id %}">
+                {% csrf_token %}
+                <button type="submit">Add</button>
+            </form>
+        </li>
+        <hr>
+    {% empty %}
+        <li>No items available</li>
+    {% endfor %}
+</ul>
+
+</body>
+</html>
